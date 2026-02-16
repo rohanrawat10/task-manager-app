@@ -17,7 +17,7 @@ export default function App() {
       <BrowserRouter>
       <Routes>
         <Route path='/login' element={<Login/>}/>
-        <Route path='sign-up' element={<SignUp/>}/>
+        <Route path='/sign-up' element={<SignUp/>}/>
         {/* adimin routes */}
         <Route element={<PrivateRoute allowedRoles={["admin"]}/>}>
          <Route path='/admin/dashboard' element={<Dashboard/>}/>
