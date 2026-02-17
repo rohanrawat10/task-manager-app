@@ -1,19 +1,17 @@
 import bcrypt from "bcrypt";
 import User from "../models/user.model.js";
-export const signUp = async(req,res)=>{
+import { genToken } from "../utils/token.js";
+import { errorHandler } from "../utils/error.js";
+export const signUp = async(req,res,next)=>{
     try{ 
     const {name,email,mobile,password,profileImageUrl,adminJoinCode}=req.body
      if(!name?.trim() || !email?.trim() || !password?.trim()){
-        return res
-        .status(400)
-        .json({ message:"All feilds are required"})
+        return next(errorHandler(400,"All feilds are required"))
      }
     // check if user already exists
     const isAlreadyExist = await User.findOne({email})
     if(isAlreadyExist){
-        return res
-        .status(400)
-        .json({success:false, message:'User already Exists'})
+        return next(errorHandler(400,"user already exists"))
     }
     //check user role
     let role = "user"
@@ -31,7 +29,7 @@ export const signUp = async(req,res)=>{
     profileImageUrl,
     password:hashedPassword
   })
-  const token =genToken(user._id)
+  const token = genToken(user._id)
   res.cookie("token",token,{
     httpOnly:true,
     sameSite:"lax",
@@ -40,8 +38,9 @@ export const signUp = async(req,res)=>{
   })
 
  return res.status(201).json({
+  message:"Signup successful",
    _id:user._id,
-   fullName:user.fullName,
+  name: user.name,
    email:user.email,
    role:user.role,
    profileImageUrl:user.profileImageUrl,
@@ -49,7 +48,7 @@ export const signUp = async(req,res)=>{
   })
 }
 catch(err){
-    res.status(500).json({message:"Sign up error:",err})
+next(errorHandler(500,err.message))
 }
 
 }

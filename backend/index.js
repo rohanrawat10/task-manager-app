@@ -20,6 +20,15 @@ app.use(cors({
 
 app.use(express.json())
 app.use(cookieParser())
+app.use((err, req, res, next) => {
+  console.log("🔥 ERROR:", err);  
+
+  res.status(err.statusCode || 500).json({
+    success: false,
+    message: err.message || "Internal Server Error",
+  });
+});
+
 app.use("/api/auth",authRouter)
 server.listen(port,()=>{
     connectDB();
