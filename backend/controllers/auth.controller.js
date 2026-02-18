@@ -2,6 +2,7 @@ import bcrypt from "bcrypt";
 import User from "../models/user.model.js";
 import { genToken } from "../utils/token.js";
 import { errorHandler } from "../utils/error.js";
+
 export const signUp = async(req,res,next)=>{
     try{ 
     const {name,email,mobile,password,profileImageUrl,adminJoinCode}=req.body
@@ -87,3 +88,12 @@ export const signIn = async (req,res,next)=>{
     next(errorHandler(500,err.message))
   }
 }
+
+// export const userProfile = async(req,res,next)=>{
+//   try{
+//   const user = await User.findById(req.user._id)
+//   }
+//   catch(err){
+//        next(errorHandler(500,err.message      ))
+//   }
+// }
