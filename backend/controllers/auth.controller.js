@@ -52,3 +52,38 @@ next(errorHandler(500,err.message))
 }
 
 }
+
+export const signIn = async (req,res,next)=>{
+  try{
+    const {email,password} = req.body
+    if(!email || !password){
+      return next(errorHandler(400,"Email & password required"))
+
+    }
+    const user = await User.findOne({email}).select("+password")
+    if(!user || !user.password){
+      return next(errorHandler(400,"Invalid credentials"))
+    }
+   const isMatched = await bcrypt.compare(password,user.password)
+  if(!isMatched){
+        return next(errorHandler(400,"Incorrect credentials"))
+  }
+  const token = genToken(user._id)
+  res.cookie("token",token,{
+    httpOnly:true,
+    sameSite:"lax",
+    secure:false,
+    maxAge:7*24*60*60*1000
+  })
+   return res.status(200).json({
+    message:"Sign-in successfull",
+    _id:user._id,
+    name:user.name,
+    email:user.email,
+    role:user.role
+   })
+  }
+  catch(err){
+    next(errorHandler(500,err.message))
+  }
+}

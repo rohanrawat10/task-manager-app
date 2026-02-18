@@ -20,6 +20,10 @@ app.use(cors({
 
 app.use(express.json())
 app.use(cookieParser())
+
+app.use("/api/auth",authRouter)
+
+
 app.use((err, req, res, next) => {
   console.log("🔥 ERROR:", err);  
 
@@ -29,7 +33,7 @@ app.use((err, req, res, next) => {
   });
 });
 
-app.use("/api/auth",authRouter)
+
 server.listen(port,()=>{
     connectDB();
     console.log(`server is running on port ${port}`)
