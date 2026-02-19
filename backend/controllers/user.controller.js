@@ -1,6 +1,7 @@
 import bcrypt from "bcrypt"
 import User from "../models/user.model.js";
 import { errorHandler } from "../utils/error.js"
+import uploadOnCloudinary from "../utils/cloudinary.js";
 
 
 export const userProfile = async(req,res,next)=>{
@@ -70,5 +71,21 @@ export const upadteUserProfile = async(req,res,next)=>{
     }
     catch(err){
         next(errorHandler(400,err.message))
+    }
+}
+
+export const uploadImage = async(req,res,next)=>{
+    try{
+    if(!req.file){
+        return next(errorHandler(400,"No file uploaded"))
+    }
+    const uploadedImage = await uploadOnCloudinary(req.file.path)
+    return res.status(200).json({
+        success:true,
+        imageUrl:uploadedImage?.secure_rul
+    })
+    }
+    catch(err){
+        next(errorHandler(500,err.message))
     }
 }

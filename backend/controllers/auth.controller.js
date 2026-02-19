@@ -2,11 +2,17 @@ import bcrypt from "bcrypt";
 import User from "../models/user.model.js";
 import { genToken } from "../utils/token.js";
 import { errorHandler } from "../utils/error.js";
+import uploadOnCloudinary from "../utils/cloudinary.js";
 
 export const signUp = async(req,res,next)=>{
     try{ 
     const {name,email,mobile,password,profileImageUrl,adminJoinCode}=req.body
-     if(!name?.trim() || !email?.trim() || !password?.trim()){
+  //  let profileImageUrl ;
+  //  if(req.file){
+  //   const uploadedImage = await uploadOnCloudinary(req.file.path);
+  //     profileImageUrl = uploadedImage?.secure_url
+  // }
+    if(!name?.trim() || !email?.trim() || !password?.trim()){
         return next(errorHandler(400,"All feilds are required"))
      }
     // check if user already exists
