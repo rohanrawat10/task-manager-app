@@ -143,7 +143,7 @@ export const userProfile = async(req,res,next)=>{
 // }
 
 
-export const upadteUserProfile = async(req,res,next)=>{
+export const upadateUserProfile = async(req,res,next)=>{
     try{
      const userId = req.userId;
      const user = await User.findById(userId);
