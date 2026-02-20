@@ -6,6 +6,7 @@ import connectDB from "./config/db.js";
 import cookieParser from "cookie-parser";
 import authRouter from "./routes/auth.route.js";
 import userRouter from "./routes/user.route.js";
+import taskRouter from "./routes/task.route.js";
 dotenv.config();
 const app = express()
 const port  = process.env.PORT || 5000;
@@ -24,6 +25,7 @@ app.use(cookieParser())
 
 app.use("/api/auth",authRouter)
 app.use("/api/users",userRouter)
+app.use("/api/tasks",taskRouter)
 
 
 app.use((err, req, res, next) => {
