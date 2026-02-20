@@ -13,8 +13,10 @@ export const createTask = async (req, res, next) => {
       attachments,
       todoCheckList,
     } = req.body;
-    if(!Array.isArray(assignedTo)){
-        return next(errorHandler(400,"assigned to must be an array of user ID's"))
+    if (!Array.isArray(assignedTo)) {
+      return next(
+        errorHandler(400, "assigned to must be an array of user ID's"),
+      );
     }
     const task = await Task.create({
       title,
@@ -25,12 +27,92 @@ export const createTask = async (req, res, next) => {
       assignedTo,
       attachments,
       todoCheckList,
-      createdBy: req.user.id
-    })
+      createdBy: req.user.id,
+    });
     res.status(201).json({
-        success:true,
-        message:"Task Created",
-        task
+      success: true,
+      message: "Task Created",
+      task,
+    });
+  } catch (err) {
+    next(errorHandler(500, err.message));
+  }
+};
+
+export const getTasks = async (req, res, next) => {
+  try {
+    const { status } = req.query;
+    let filter = {};
+    if (status) {
+      filter.status = status;
+    }
+    let tasks;
+    if (req.user.role === "admin") {
+      tasks = await Task.find(filter).populate(
+        "assignedTo",
+        "name email profileImageUrl",
+      );
+    } else {
+      tasks = await Task.find({
+        ...filter,
+        assignedTo: req.user.id,
+      }).populate("assignedTo", "name email profileImageUrl");
+    }
+    // tasks = await Promise.all(
+    //   tasks.map(async (task) => {
+    //     const completedCount = task.todoChecklist.filter(
+    //       (item) => item.completed,
+    //     ).length;
+    //     return {...tasks._doc,
+    //         completedCount
+    //     }
+    //   }),
+
+    // );
+    tasks = tasks.map((task) => {
+  const checklist = Array.isArray(task.todoChecklist)
+    ? task.todoChecklist
+    : [];
+
+  const completedCount = checklist.filter(
+    (item) => item.completed === true
+  ).length;
+
+  return {
+    ...task._doc,
+    completedCount,
+  };
+});
+
+    // status summary count
+    const allTasks = await Task.countDocuments(
+        req.user.role === "admin"?{}:{assignedTo:req.user.id}
+    )
+    const pendingTasks = await Task.countDocuments({
+        ...filter,
+        status:"Pending",
+        ...(req.user.role !== "admin" && {assignedTo:req.user.id})
+    })
+    const inProgressTask= await Task.countDocuments({
+        ...filter,
+        status:"In Progress",
+        // if logged in user is not admin then add assigned
+        // if logged in user is the admin then nothing to do, just count
+        ...(req.user.role !== "admin" && {assignedTo:req.user.id})
+    })
+    const completedTask = await Task.countDocuments({
+        ...filter,
+        status:"Completed",
+        ...(req.user.role !== "admin" && {assignedTo:req.user.id})
+    })
+    res.status(200).json({
+        tasks,
+        statusSummary:{
+            all:allTasks,
+            pendingTasks,
+            inProgressTask,
+          completedTask
+        }
     })
   } catch (err) {
     next(errorHandler(500, err.message));
