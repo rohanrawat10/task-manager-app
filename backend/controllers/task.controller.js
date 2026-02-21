@@ -71,7 +71,7 @@ export const getTasks = async (req, res, next) => {
     // );
     tasks = tasks.map((task) => {
   const checklist = Array.isArray(task.todoChecklist)
-    ? task.todoChecklist
+    ? task.todoCheckList
     : [];
 
   const completedCount = checklist.filter(
@@ -118,3 +118,54 @@ export const getTasks = async (req, res, next) => {
     next(errorHandler(500, err.message));
   }
 };
+
+export const getTaskById = async(req,res,next)=>{
+     try{
+        console.log(req.params.id)
+        // const taskId = req.params.id
+        const task = await Task.findById(req.params.id).populate(
+            "assignedTo",
+            "name email profileImageUrl"
+        )
+        if(!task){
+            return next(errorHandler(404,"No task Found!"))
+        }
+        res.status(200).json(task)
+     }
+    
+    catch(err){
+        next(errorHandler(500,err.message))
+    }
+}
+
+export const updateTask = async(req,res,next)=>{
+    try{
+       const task = await Task.findById(req.params.id)
+      if(!task){
+        return next(errorHandler(400,"No Task found!"))
+      }
+      task.title = req.body.title || task.title
+      task.description = req.body.description || task.description
+      task.priority = req.body.priority || task.priority
+      task.dueDate = req.body.dueDate || task.dueDate
+      task.todoCheckList = req.body.todoCheckList || task.todoCheckList
+      task.status = req.body.status || task.status
+      task.attachments = req.body.attachments || task.attachements
+       
+      if(req.body.assignedTo){
+        if(!Array.isArray(req.body.assignedTo)){
+            return next(errorHandler(400,"assignedTo must be an array"))
+        }
+        task.assignedTo = req.body.assignedTo
+      }
+      const updatedTask = await task.save()
+      return res.status(200).json({
+        success:true,
+        message:"Task Updated Successfully",
+        updatedTask
+      })
+    }
+    catch(err){
+        next(errorHandler(500,err.message))
+    }
+}
