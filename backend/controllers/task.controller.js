@@ -149,7 +149,7 @@ export const updateTask = async(req,res,next)=>{
       task.priority = req.body.priority || task.priority
       task.dueDate = req.body.dueDate || task.dueDate
       task.todoCheckList = req.body.todoCheckList || task.todoCheckList
-      task.status = req.body.status || task.status
+    //   task.status = req.body.status || task.status
       task.attachments = req.body.attachments || task.attachements
        
       if(req.body.assignedTo){
@@ -178,6 +178,28 @@ export const deleteTask = async(req,res,next)=>{
      }
      await task.deleteOne()
      res.status(200).json({message:"Task Deleted Successfully!"})
+    }
+    catch(err){
+        next(errorHandler(500,err.message))
+    }
+}
+
+export const updateTaskStatus = async(req,res,next)=>{
+    try{
+     const task = await Task.findById(req.params.id);
+     if(!task){
+        return next(errorHandler(400,"No task found!"))
+        // task.status = req.body.status || task.status
+     }
+      const isAssigned = task.assignedTo.some((userId)=>userId.toString()===req.user.id)
+     if(!isAssigned && req.user.role !="admin"){
+        return next(errorHandler(403,"Unauthorized user"))
+     }
+     task.status = req.body.status || task.status
+     if(task.status === "completed"){
+       task.todoCheckList.forEach((item)=>(item.completed = true))
+     }
+     res.status(200).json({message:"Task status updated",task})
     }
     catch(err){
         next(errorHandler(500,err.message))
