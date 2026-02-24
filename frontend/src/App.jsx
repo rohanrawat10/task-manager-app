@@ -10,7 +10,7 @@ import PrivateRoute from './routes/PrivateRoute'
 import UserDashboard from './pages/user/UserDashboard'
 import MyTasks from './pages/user/MyTasks'
 import TaskDetails from './pages/user/TaskDetails'
-
+import ForgotPassword from './pages/auth/ForgotPassword'
 export default function App() {
   return (
     <div >
@@ -18,6 +18,7 @@ export default function App() {
       <Routes>
         <Route path='/login' element={<Login/>}/>
         <Route path='/sign-up' element={<SignUp/>}/>
+        <Route path='/forgot-password' element={<ForgotPassword/>}/>
         {/* adimin routes */}
         <Route element={<PrivateRoute allowedRoles={["admin"]}/>}>
          <Route path='/admin/dashboard' element={<Dashboard/>}/>
@@ -28,7 +29,7 @@ export default function App() {
         
         {/* User Routes */}
 
-        <Route element={<PrivateRoute allowedRoles={[user]}/>}>
+        <Route element={<PrivateRoute allowedRoles={["user"]}/>}>
        <Route path='/user/dashboard' element={<UserDashboard/>}/>
        <Route path='/user/tasks' element={<MyTasks/>}/>
        <Route path='/user/task-details/:id' element={<TaskDetails/>}/>

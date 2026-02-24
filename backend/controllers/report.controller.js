@@ -1,5 +1,5 @@
-import Task from "../models/task.model"
-import { errorHandler } from "../utils/error"
+import Task from "../models/task.model.js"
+import { errorHandler } from "../utils/error.js"
 import exceljs from "exceljs";
 export const exportTaskReport = async(req,res,next)=>{
     try{
@@ -74,7 +74,7 @@ export const exportUserReport = async(req,res,next)=>{
          })
                 const workbook = new exceljs.Workbook()
                 const worksheet = workbook.addWorksheet("User Task Report")
-         worksheet.columns = [
+         worksheet.columns = [ 
             {header:"User Name",key:"name",width:30},
             {header:"email",key:"name",width:40},
              {header:"Total Assigned Tasks",key:"taskCount",width:20},
