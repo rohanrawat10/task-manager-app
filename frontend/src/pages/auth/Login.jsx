@@ -38,6 +38,12 @@ function Login() {
       setError("")
        setLoading(false)
        console.log(result.data)
+       if(result.data.role === "admin"){
+        navigate("/admin/dashboard")
+       }
+       else{
+        navigate("/user/dashboard")
+       }
     }
     catch(err){
      setLoading(false)

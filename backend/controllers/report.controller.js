@@ -1,10 +1,11 @@
 import Task from "../models/task.model.js"
+import User from "../models/user.model.js";
 import { errorHandler } from "../utils/error.js"
 import exceljs from "exceljs";
 export const exportTaskReport = async(req,res,next)=>{
     try{
 const tasks = await Task.find().populate("assignedTo","name email")
-const workbook = new exceljs.workbook()
+const workbook = new exceljs.Workbook()
 const worksheet = workbook.addWorksheet("Task Report")
 worksheet.columns = [
     {header:"Task Id",key:"_id",width:25},
