@@ -8,14 +8,19 @@ import { Link, useNavigate } from "react-router-dom";
 import axios from "axios";
 import { serverUrl } from "../../config";
 import { ClipLoader } from "react-spinners";
-import { validateEmail } from "../../assets/utils/helper";
+import { validateEmail } from "../../utils/helper";
+import { useDispatch, useSelector } from "react-redux";
+import { signInFailure, signInStart, signInSuccess } from "../../redux/userSlice";
 function Login() {
+const navigate = useNavigate();
+  const dispatch = useDispatch()
+
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [showPassword, setShowPassword] = useState(false);
   const [error, setError] = useState("");
-  const [loading, setLoading] = useState(false);
-  const navigate = useNavigate();
+  // const [loading, setLoading] = useState(false);
+  const {loading} = useSelector(state=>state.user)
   const togglePassword = () => {
     setShowPassword((prev) => !prev);
   };
@@ -28,25 +33,29 @@ function Login() {
       setError("Enter Password")
       return
     }
-    setLoading(true)
+
     try{
+      dispatch(signInStart)
       const result = await axios.post(`${serverUrl}/api/auth/sign-in`,{
         email:email.trim().toLowerCase(),
         password:password.trim()
       },{withCredentials:true})
       // navigate("/")
       setError("")
-       setLoading(false)
+      //  setLoading(false)
        console.log(result.data)
        if(result.data.role === "admin"){
+        dispatch(signInSuccess(result.data))
         navigate("/admin/dashboard")
        }
        else{
+        dispatch(signInSuccess(result.data))
         navigate("/user/dashboard")
        }
     }
     catch(err){
-     setLoading(false)
+    //  setLoading(false)
+    dispatch(signInFailure(err.message))
      const msg = err.response?.data?.message || "Something went wrong"
        setError(msg)
      if (err.response) {

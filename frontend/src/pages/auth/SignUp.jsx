@@ -5,7 +5,7 @@ import { FaEyeSlash, FaRegEye } from 'react-icons/fa';
 import { ClipLoader } from 'react-spinners';
 import { FcGoogle } from 'react-icons/fc';
 import { Link } from 'react-router-dom';
-import { validateEmail } from '../../assets/utils/helper';
+import { validateEmail } from '../../utils/helper';
 import ProfilePhotoSelector from '../../components/ProfilePhotoSelector';
 import axios from 'axios';
 import { serverUrl } from '../../config';
