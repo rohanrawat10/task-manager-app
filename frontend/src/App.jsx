@@ -11,6 +11,7 @@ import UserDashboard from './pages/user/UserDashboard'
 import MyTasks from './pages/user/MyTasks'
 import TaskDetails from './pages/user/TaskDetails'
 import ForgotPassword from './pages/auth/ForgotPassword'
+import { useSelector } from 'react-redux'
 export default function App() {
   return (
     <div >
@@ -34,9 +35,21 @@ export default function App() {
        <Route path='/user/tasks' element={<MyTasks/>}/>
        <Route path='/user/task-details/:id' element={<TaskDetails/>}/>
         </Route>
+
+        {/* Default Routes */}
+        <Route path='/' element={<Root/>}/>
       </Routes>
       </BrowserRouter>
     </div>
   )
 }
  
+const Root = ()=>{
+  const {currentUser} = useSelector((state)=>state.user)
+  if(!currentUser){
+    return <Navigate to={"/login"}/>
+  }
+  return currentUser.role === "admin"?(
+    <Navigate to={"/admin/dashboard"}/>
+  ):<Navigate to={"/user/dashboard"}/>
+}
