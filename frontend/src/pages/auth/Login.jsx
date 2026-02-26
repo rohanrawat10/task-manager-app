@@ -55,9 +55,10 @@ const navigate = useNavigate();
     }
     catch(err){
     //  setLoading(false)
-    dispatch(signInFailure(err.message))
      const msg = err.response?.data?.message || "Something went wrong"
-       setError(msg)
+         dispatch(signInFailure(msg))
+
+     setError(msg)
      if (err.response) {
     console.error("Backend error status:", err.response.status);
     console.error("Backend response data:", err.response.data);
