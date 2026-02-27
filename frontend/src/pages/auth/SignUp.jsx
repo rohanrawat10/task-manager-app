@@ -4,13 +4,17 @@ import { FaPeopleLine } from 'react-icons/fa6';
 import { FaEyeSlash, FaRegEye } from 'react-icons/fa';
 import { ClipLoader } from 'react-spinners';
 import { FcGoogle } from 'react-icons/fc';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import { validateEmail } from '../../utils/helper';
 import ProfilePhotoSelector from '../../components/ProfilePhotoSelector';
 import axios from 'axios';
 import { serverUrl } from '../../config';
+import { useDispatch } from 'react-redux';
+import uploadImage from '../../utils/uploadImage';
 
 function SignUp() {
+  const dispatch = useDispatch()
+  const navigate = useNavigate()
   const[name,setName] = useState("")
   const[mobile,setMobile] = useState("")
   const [email,setEmail] = useState("")
@@ -31,7 +35,7 @@ function SignUp() {
   const handleSignUp = async (e) => {
   e?.preventDefault();
 
-  if (!validateEmail(email)) {
+  if (!validateEmail(email.trim())) {
     setError("Please enter a valid email");
     return;
   }
@@ -41,23 +45,23 @@ function SignUp() {
     return;
   }
 
-  setLoading(true);
+  // setLoading(true);
+
 
   try {
-    const formData = new FormData();
-    formData.append("name", name.trim());
-    formData.append("mobile", mobile.trim());
-    formData.append("email", email.trim().toLowerCase());
-    formData.append("password", password.trim());
-    formData.append("adminInviteToken", adminInviteToken.trim());
-
-    if (profilePic) {
-      formData.append("profilePic", profilePic);
+    if(profilePic){
+      const imageUploads = await  uploadImage(profilePic)
+      profileImageUrl = imageUploads.imageUrl || ""
     }
-
     const result = await axios.post(
       `${serverUrl}/api/auth/sign-up`,
-      formData,
+     { name,
+      email,
+      password,
+      profileImageUrl,
+      adminJoinCode:adminInviteToken,
+     }
+      ,
       {
         withCredentials: true,
         headers: {
@@ -71,8 +75,7 @@ function SignUp() {
   } catch (err) {
     const msg = err.response?.data?.message || "Something went wrong";
     setError(msg);
-  } finally {
-    setLoading(false);
+    console.log(msg)
   }
 };
   return (

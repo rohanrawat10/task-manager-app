@@ -4,9 +4,12 @@ import { genToken } from "../utils/token.js";
 import { errorHandler } from "../utils/error.js";
 import uploadOnCloudinary from "../utils/cloudinary.js";
 
-export const signUp = async(req,res,next)=>{
+export const 
+signUp = async(req,res,next)=>{
+  console.log(req.body)
     try{ 
     const {name,email,mobile,password,profileImageUrl,adminJoinCode}=req.body
+
   //  let profileImageUrl ;
   //  if(req.file){
   //   const uploadedImage = await uploadOnCloudinary(req.file.path);

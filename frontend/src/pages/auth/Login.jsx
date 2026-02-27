@@ -145,7 +145,7 @@ const navigate = useNavigate();
                     Forgotten password?
                  </div>
             </Link>
-            <p className=" text-center">Don't have an account? <Link to="/signup"><span className="text-blue-500">Create account</span></Link></p>
+            <p className=" text-center">Don't have an account? <Link to="/sign-up"><span className="text-blue-500">Create account</span></Link></p>
           </div>
         </div>
       </div>
