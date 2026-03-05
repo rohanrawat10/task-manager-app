@@ -13,7 +13,7 @@
 
 
 import express from "express";
-import { signUp, signIn,userProfile,uploadImage, upadateUserProfile } from "../controllers/auth.controller.js";
+import { signUp, signIn,userProfile,uploadImage, upadateUserProfile,signOut } from "../controllers/auth.controller.js";
 import isAuth from "../middlewares/isAuth.js";
 import { upload } from "../middlewares/multer.js";
 const authRouter = express.Router();
@@ -23,5 +23,5 @@ authRouter.post("/sign-in", signIn)
 authRouter.get("/user-profile", isAuth, userProfile)
 authRouter.put("/updated-profile", isAuth, upload.single("image"), upadateUserProfile)
 authRouter.post("/upload-image", upload.single("image"), uploadImage)
-
+authRouter.post("/sign-out",signOut)
 export default authRouter;

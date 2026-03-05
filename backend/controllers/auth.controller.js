@@ -185,10 +185,20 @@ export const uploadImage = async(req,res,next)=>{
     const uploadedImage = await uploadOnCloudinary(req.file.path)
     return res.status(200).json({
         success:true,
-        imageUrl:uploadedImage?.secure_rul
+        imageUrl:uploadedImage?.secure_url
     })
     }
     catch(err){
         next(errorHandler(500,err.message))
     }
+}
+
+export const signOut = async(req,res,next)=>{
+  try{
+res.clearCookie("access_token")
+return res.status(200).json({message:"logged out succesfully"})
+  }
+  catch(err){
+    next(errorHandler(500,err.message));
+  }
 }

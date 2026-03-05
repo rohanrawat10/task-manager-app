@@ -49,33 +49,40 @@ function SignUp() {
 
 
   try {
+    let profileImageUrl =""
     if(profilePic){
       const imageUploads = await  uploadImage(profilePic)
       profileImageUrl = imageUploads.imageUrl || ""
     }
     const result = await axios.post(
       `${serverUrl}/api/auth/sign-up`,
-     { name,
+     { 
+      name,
       email,
       password,
+      mobile,
       profileImageUrl,
       adminJoinCode:adminInviteToken,
      }
       ,
       {
         withCredentials: true,
-        headers: {
-          "Content-Type": "multipart/form-data",
-        },
+
       }
     );
 
     setError("");
     console.log(result.data);
+    if(result.data.role ==="admin"){
+      navigate("/admin/dashboard")
+    }
+    else{
+      navigate("/user/dashboard")
+    }
   } catch (err) {
     const msg = err.response?.data?.message || "Something went wrong";
     setError(msg);
-    console.log(msg)
+    console.error(msg)
   }
 };
   return (

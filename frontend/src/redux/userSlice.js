@@ -19,6 +19,11 @@ reducers:{
    signInFailure:(state,action)=>{
     state.loading = false,
     state.error = action.payload
+   },
+   signOutSuccess:(state)=>{
+    state.currentUser = null,
+    state.error  = null ,
+    state.loading = false
    }
 }
 })
