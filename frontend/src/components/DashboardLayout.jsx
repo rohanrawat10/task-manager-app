@@ -1,9 +1,9 @@
-import React from "react";
+import React, { Children } from "react";
 import { useSelector } from "react-redux";
 import Navbar from "./Navbar";
 import SideMenu from "./SideMenu";
 
-function DashboardLayout({ data, activeMenu }) {
+function DashboardLayout({ children, activeMenu }) {
   const { currentUser } = useSelector((state) => state.user);
   return (
     <div className="min-h-screen flex flex-col">
@@ -13,7 +13,7 @@ function DashboardLayout({ data, activeMenu }) {
             <div className="max-[1080px]:hidden">
               <SideMenu activeMenu={activeMenu} />
             </div>
-            <div className="grow mx-5">{data}</div>
+            <div className="grow mx-5">{children}</div>
           </div>
         )}
     </div>

@@ -8,7 +8,7 @@ export const
 signUp = async(req,res,next)=>{
   console.log(req.body)
     try{ 
-    const {name,email,mobile,password,profileImageUrl,adminJoinCode}=req.body
+      const {name,email,mobile,password,profileImageUrl,adminJoinCode}=req.body
 
   //  let profileImageUrl ;
   //  if(req.file){
@@ -19,7 +19,8 @@ signUp = async(req,res,next)=>{
         return next(errorHandler(400,"All feilds are required"))
      }
     // check if user already exists
-    const isAlreadyExist = await User.findOne({email})
+    const emailNormalized = email.toLowerCase().trim()
+    const isAlreadyExist = await User.findOne({email:emailNormalized})
     if(isAlreadyExist){
         return next(errorHandler(400,"user already exists"))
     }
@@ -33,7 +34,7 @@ signUp = async(req,res,next)=>{
 
   const user = await User.create({
     name,
-    email,
+    email:emailNormalized,
     mobile,
     role,
     profileImageUrl,
@@ -66,13 +67,17 @@ next(errorHandler(500,err.message))
 export const signIn = async (req,res,next)=>{
   try{
     const {email,password} = req.body
+    console.log("request body:",req.body)
     if(!email || !password){
       return next(errorHandler(400,"Email & password required"))
 
     }
-    const user = await User.findOne({email}).select("+password")
-    if(!user || !user.password){
-      return next(errorHandler(400,"Invalid credentials!"))
+    console.log("Email from login",email)
+    const emailNormalized = email.toLowerCase().trim()
+    const user = await User.findOne({email:emailNormalized}).select("+password")
+     console.log("User from DB:",user)
+    if(!user){
+      return next(errorHandler(400,"Invalid email or password"))
     }
    const isMatched = await bcrypt.compare(password,user.password)
   if(!isMatched){

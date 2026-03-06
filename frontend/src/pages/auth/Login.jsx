@@ -105,7 +105,7 @@ const navigate = useNavigate();
               <div className="mb-4">
                 <div className="relative">
                   <input
-                    type={showPassword ? "text" : password}
+                    type={showPassword ? "text" : "password"}
                     value={password}
                     placeholder="Enter your password"
                     onChange={(e) => setPassword(e.target.value)}
