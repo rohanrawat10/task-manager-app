@@ -8,33 +8,39 @@ import { useNavigate } from "react-router-dom";
 import { IoIosCreate } from "react-icons/io";
 import RecentTasks from "../../components/RecentTasks";
 import CustomPieChart from "../../components/CustomPieChart";
-const COLORS = ["#FF6384","#36A2EB","#FFCE56"] 
+import CustomBarChart from "../../components/CustomBarChart";
+const COLORS = ["#FF6384", "#36A2EB", "#FFCE56"];
 function Dashboard() {
   const navigate = useNavigate();
   const { currentUser } = useSelector((state) => state.user);
-  const [pieChartData, setPieChartData] = useState(null);
-  const [dashboardData, setDashboardData] = useState(null);
-  const [barChartData, setBarChartData] = useState(null);
+  const [pieChartData, setPieChartData] = useState([]);
+  const [dashboardData, setDashboardData] = useState([]);
+  const [barChartData, setBarChartData] = useState([]);
   console.log("current user", currentUser);
-    // prepare data for pie chart
+  // prepare data for pie chart
 
-const prepareChartData = (data)=>{
-        const taskDistribution = data?.taskDistribution || null;
-         const taskPriorityLevels = data?.taskPriorityLevels || null
-         const taskDistributionData= [
-              {status:"Pending",count:taskDistribution?.Pending || 0},
-               {status:"In Progress",count:taskDistribution?.InProgress || 0},
-               {status:"Completed", count:taskDistribution?.Completed || 0}
-         ]
-         setPieChartData(taskDistributionData)
+  const prepareChartData = (data) => {
+    const taskDistribution = data?.taskDistribution || {};
+    const taskPriorityLevels = data?.taskPriorityLevel || {};
+    const taskDistributionData = [
+      { status: "Pending", count: taskDistribution?.Pending || 0 },
+      { status: "In Progress", count: taskDistribution?.InProgress || 0 },
+      { status: "Completed", count: taskDistribution?.Completed || 0 },
+    ];
+    setPieChartData(taskDistributionData);
 
-         const priorityLevelData =[
-          {priority:"Low",count:taskPriorityLevels?.Low || 0},
-            {priority:"Medium",count:taskPriorityLevels?.Medium || 0},
-              {priority:"High",count:taskPriorityLevels?.High || 0}
-         ]
-         setBarChartData(priorityLevelData)
-      }      
+    const priorityLevelData = [
+      { priority: "Low", count: taskPriorityLevels?.Low || 0 },
+      { priority: "Medium", count: taskPriorityLevels?.Medium || 0 },
+      { priority: "High", count: taskPriorityLevels?.High || 0 },
+
+      // {priority:"Low",count:5},
+      //   {priority:"Medium",count:4},
+      //     {priority:"High",count:3}
+    ];
+    setBarChartData(priorityLevelData);
+    console.log("Bar Chart Data:", barChartData);
+  };
 
   const getDashboardData = async () => {
     try {
@@ -44,9 +50,9 @@ const prepareChartData = (data)=>{
 
       if (result.data) {
         setDashboardData(result.data);
-        prepareChartData(result.data?.charts || null)
+        prepareChartData(result.data?.charts || null);
       }
-      console.log(result.data)
+      console.log(result.data);
     } catch (err) {
       console.log("Error fetching dashboard data", err.message);
     }
@@ -69,11 +75,14 @@ const prepareChartData = (data)=>{
               </p>
             </div>
             <div className="mt-4 md:mt-0">
-             <button className="bg-white text-blue-600 hover:bg-blue-50 px-6 py-2 rounded-lg font-medium
+              <button
+                className="bg-white text-blue-600 hover:bg-blue-50 px-6 py-2 rounded-lg font-medium
                font-medium transition-all duration-200 shadow-md 
-              " onClick={()=>navigate("/admin/create-task")}>
+              "
+                onClick={() => navigate("/admin/create-task")}
+              >
                 Create New Tasks
-              </button> 
+              </button>
             </div>
           </div>
         </div>
@@ -85,60 +94,69 @@ const prepareChartData = (data)=>{
             >
               <h3 className="text-gray-500 text-sm font-medium">Total Tasks</h3>
               <p className="text-3xl font-bold text-gray-800 mt-2">
-                {dashboardData?.charts?.taskDistribution.All || 0 }
+                {dashboardData?.charts?.taskDistribution.All || 0}
               </p>
-
             </div>
             <div
               className="bg-white p-6 rounded-xl shadow-md border-l-4 border-l-4
                border-yellow-500"
             >
-              <h3 className="text-gray-500 text-sm font-medium">Pending Tasks</h3>
+              <h3 className="text-gray-500 text-sm font-medium">
+                Pending Tasks
+              </h3>
               <p className="text-3xl font-bold text-gray-800 mt-2">
-                {dashboardData?.charts?.taskDistribution.pending || 0 }
+                {dashboardData?.charts?.taskDistribution.Pending || 0}
               </p>
-              
             </div>
             <div
               className="bg-white p-6 rounded-xl shadow-md border-l-4 border-l-4
                border-green-500"
             >
-              <h3 className="text-gray-500 text-sm font-medium">In Progress Tasks</h3>
+              <h3 className="text-gray-500 text-sm font-medium">
+                In Progress Tasks
+              </h3>
               <p className="text-3xl font-bold text-gray-800 mt-2">
-                {dashboardData?.charts?.taskDistribution.inProgress || 0 }
+                {dashboardData?.charts?.taskDistribution.InProgress || 0}
               </p>
-              
             </div>
             <div
               className="bg-white p-6 rounded-xl shadow-md border-l-4 border-l-4
                border-red-800"
             >
-              <h3 className="text-gray-500 text-sm font-medium">Completed Tasks</h3>
+              <h3 className="text-gray-500 text-sm font-medium">
+                Completed Tasks
+              </h3>
               <p className="text-3xl font-bold text-gray-800 mt-2">
-                {dashboardData?.charts?.taskDistribution.completedTasks || 0 }
+                {dashboardData?.charts?.taskDistribution.Completed || 0}
               </p>
-              
             </div>
           </div>
         )}
         {/* Charts section */}
-           <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
-             <div className="bg-white p-6 rounded-xl">
-            <h3 className="text-lg font-semibold text-gray-800 mb-4">Task Distribution</h3>
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+          <div className="bg-white p-6 rounded-xl">
+            <h3 className="text-lg font-semibold text-gray-800 mb-4">
+              Task Distribution
+            </h3>
             <div className="h-64">
-                <CustomPieChart
-                 data={pieChartData}
-                 label="Total Balance"
-                 colors={COLORS}
-                />
+              <CustomPieChart
+                data={pieChartData}
+                label="Total Balance"
+                colors={COLORS}
+              />
             </div>
-            
-            
-             </div>
-           
-           </div>
+          </div>
+          <div className="bg-white p-6 rounded-xl">
+            <h3 className="text-lg font-semibold text-gray-800 mb-4">
+              Task Priority
+            </h3>
+            <div>
+              <CustomBarChart data={barChartData} />
+            </div>
+          </div>
+        </div>
         {/* recent task section */}
-        <RecentTasks tasks={dashboardData?.recentTasks}/>
+        <RecentTasks tasks={dashboardData?.recentTasks} />
       </div>
     </DashboardLayout>
   );
