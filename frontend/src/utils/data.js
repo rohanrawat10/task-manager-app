@@ -12,13 +12,13 @@ export const SIDE_MENU_DATA = [
             id:2,
             label:"Manage Task",
              icon: MdOutlineManageHistory,
-             path:'/admin/managetask'
+             path:'/admin/tasks'
         },
         {
             id:3,
             label:"Create Task",
             icon:IoIosCreate,
-            path:"/admin/createtask"
+            path:"/admin/create-task"
         },
         {
             id:4,
