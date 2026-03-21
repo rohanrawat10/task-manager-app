@@ -9,7 +9,7 @@ function SelectedUsers({selectedUser,setSelectedUsers}) {
     const [allUsers,setAllUsers] = useState([])
     const [isModalOpen,setIsModalOpen] = useState(false)
     const [tempSelctedUser,setTempSelectorUser] = useState([])
-    console.log("all users",allUsers)  
+    // console.log("all users",allUsers)  
     const getAllUsers = async()=>{
         try{
            const result = await axios.get(`${serverUrl}/api/users/get-users`,

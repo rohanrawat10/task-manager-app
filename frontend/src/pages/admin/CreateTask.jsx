@@ -7,6 +7,8 @@ import "react-datepicker/dist/react-datepicker.css";
 import SelectedUsers from '../../components/SelectedUsers';
 import TodoChecklistInput from '../../components/TodoChecklistInput';
 import AddAttachmentsInput from '../../components/AddAttachmentsInput';
+import axios from 'axios';
+import { serverUrl } from '../../config';
 
 function CreateTask() {
   const location = useLocation();
@@ -44,7 +46,23 @@ function CreateTask() {
     })
   }
 
-  const createTask = async () => {}
+  const createTask = async () => {
+    try{
+             const todoList = taskData.todoChecklist?.map((item)=>({
+              text:item,
+              completed:false,
+             }))
+             let result = await axios.post(`${serverUrl}/api/tasks/create-task`,{...taskData,
+              dueDate:new Date(taskData.dueDate.toISOString()),
+                 todoChecklist:todoList,
+            },{withCredentials:true})
+            clearData();
+            console.log("task Created",result.data)
+    }
+    catch(err){
+      console.error("task creatded",err.message)
+    }
+  }
   const updateTask = async () => {}
   const handleSubmit = async (e) => {
     setError("")
@@ -58,8 +76,8 @@ function CreateTask() {
     if(!taskData.todoChecklist?.length === 0){
           setError("Create task!")
     }
-    if(!taskData.assignedTo?.length === 0){
-      setError("Assing the task!")
+    if(taskData.assignedTo?.length === 0){
+      setError("Assign the task!")
     }
     if(taskId){
       updateTask()

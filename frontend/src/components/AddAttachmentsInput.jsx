@@ -37,7 +37,7 @@ function AddAttachmentsInput({ attachments, setAttachments }) {
 
           <button
             type="button"
-            className="cursor-pointer p-1 hover:bg-red-100 rounded-full transition-colors"
+            className="cursor-pointer p-1 hover:bg-red-300 rounded-full transition-colors"
             onClick={() => handleDeleteOption(item.id)}
             aria-label={`Delete item ${index + 1}`}
           >
