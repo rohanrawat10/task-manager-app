@@ -59,19 +59,9 @@ export const getTasks = async (req, res, next) => {
         assignedTo: req.user.id,
       }).populate("assignedTo", "name email profileImageUrl");
     }
-    // tasks = await Promise.all(
-    //   tasks.map(async (task) => {
-    //     const completedCount = task.todoChecklist.filter(
-    //       (item) => item.completed,
-    //     ).length;
-    //     return {...tasks._doc,
-    //         completedCount
-    //     }
-    //   }),
-
-    // );
+   
     tasks = tasks.map((task) => {
-  const checklist = Array.isArray(task.todoChecklist)
+  const checklist = Array.isArray(task.todoCheckList)
     ? task.todoCheckList
     : [];
 

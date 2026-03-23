@@ -4,17 +4,12 @@ import { genToken } from "../utils/token.js";
 import { errorHandler } from "../utils/error.js";
 import uploadOnCloudinary from "../utils/cloudinary.js";
 
-export const 
-signUp = async(req,res,next)=>{
+export const signUp = async(req,res,next)=>{
   console.log(req.body)
     try{ 
       const {name,email,mobile,password,profileImageUrl,adminJoinCode}=req.body
 
-  //  let profileImageUrl ;
-  //  if(req.file){
-  //   const uploadedImage = await uploadOnCloudinary(req.file.path);
-  //     profileImageUrl = uploadedImage?.secure_url
-  // }
+ 
     if(!name?.trim() || !email?.trim() || !password?.trim()){
         return next(errorHandler(400,"All feilds are required"))
      }
@@ -103,15 +98,6 @@ export const signIn = async (req,res,next)=>{
   }
 }
 
-// export const userProfile = async(req,res,next)=>{
-//   try{
-//   const user = await User.findById(req.user._id)
-//   }
-//   catch(err){
-//        next(errorHandler(500,err.message      ))
-//   }
-// }
-
 export const userProfile = async(req,res,next)=>{
     try{
      const userId = req.userId
@@ -128,27 +114,6 @@ export const userProfile = async(req,res,next)=>{
         next(errorHandler(500,err.message))
     }
 }
-
-// export const upadtedUserProfile = async(req,res,next)=>{
-//     try{
-//         const userId = req.userId
-//        const user = await User.findById(userId)
-//        if(!user){
-//         return next(errorHandler(400,"user not found"))
-//        }
-//        user.name = req.body.name || user.name
-//        user.email = req.body.email || user.email
-//         user.password = await bcrypt.hash(req.body.password,10)
-       
-//     //    const updatedData = {name,email,mobile,password,profileImageUrl,adminJoinCode}
-//     const updatedData = user   
-//     user = await User.findByIdAndUpdate(userId,updatedData,{new:true})
-//       return res.status(201).json(user)
-//     }
-//     catch(err){
-//         next(errorHandler(500,err.message))
-//     }
-// }
 
 
 export const upadateUserProfile = async(req,res,next)=>{

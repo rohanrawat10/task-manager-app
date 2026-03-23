@@ -24,7 +24,7 @@ export const SIDE_MENU_DATA = [
             id:4,
             label:"Team Members",
             icon:MdOutlineGroups2,
-            path:"/admin/teamembers"
+            path:"/admin/users"
         },
     {
         id:5,
