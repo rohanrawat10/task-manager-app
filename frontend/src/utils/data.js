@@ -26,12 +26,12 @@ export const SIDE_MENU_DATA = [
             icon:MdOutlineGroups2,
             path:"/admin/users"
         },
-    {
-        id:5,
-        label:"Logout",
-        icon:IoIosLogOut,
-        path:"logout"
-    }
+    // {
+    //     id:5,
+    //     label:"Logout",
+    //     icon:IoIosLogOut,
+    //     path:"logout"
+    // }
 ]
 
 export const USER_SIDE_MENU_DATA = [

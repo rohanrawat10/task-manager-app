@@ -46,8 +46,9 @@ const taskSchema = new mongoose.Schema(
         ref: "user",
       },
     ],
-    attachements: [{
-        type:String,
+    attachments: [{
+        id:Number,
+        url:String
 
     }],
     todoCheckList:[todoSchema],

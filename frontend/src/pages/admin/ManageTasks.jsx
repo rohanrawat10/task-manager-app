@@ -5,13 +5,14 @@ import axios from "axios";
 import { serverUrl } from "../../config";
 import TaskStatusTabs from "../../components/TaskStatusTabs";
 import { FaFileExcel } from "react-icons/fa";
+import TaskCard from "../../components/TaskCard";
 function ManageTasks() {
   const navigate = useNavigate();
   const [allTasks, setAllTasks] = useState([]);
   const [tabs, setTabs] = useState("All");
   const [filterStatus, setFilterStatus] = useState("All");
 
-  console.log("tasks", tabs);
+  // console.log("tasks", tabs);
 
   const getAllTasks = async () => {
     try {
@@ -20,16 +21,17 @@ function ManageTasks() {
         withCredentials: true,
       });
       if (result?.data) {
-        setAllTasks(result.data?.tasks?.length > 0 ? result.data.tasks : []);
+        setAllTasks(result?.data?.tasks?.length > 0 ? result.data.tasks : []);
       }
       const statusSummary = result.data?.statusSummary || {};
       const StatusArray = [
-        { label: "All", count: statusSummary.all || 0 },
-        { label: "Pending", count: statusSummary.pendingTasks || 0 },
-        { label: "In Progress", count: statusSummary.inProgressTasks || 0 },
-        { label: "Completed", count: statusSummary.completed || 0 },
+        { label: "All", count: statusSummary?.all || 0 },
+        { label: "Pending", count: statusSummary?.pendingTasks|| 0 },
+        { label: "In Progress", count: statusSummary?.inProgressTask || 0 },
+        { label: "Completed", count: statusSummary.completedTask || 0 },
       ];
       setTabs(StatusArray);
+      console.log("get all tasks",result.data)
     } catch (err) {
       console.error("Error fetch tasks:", err);
     }
@@ -38,6 +40,7 @@ function ManageTasks() {
     navigate("/admin/create-task", { state: { taskId: taskData._id } });
   };
   const handleDownloadReport = async () => {};
+
   useEffect(() => {
     getAllTasks(filterStatus);
     return () => {};
@@ -79,6 +82,24 @@ function ManageTasks() {
                 </div>
             )
           }
+        </div>
+        <div className='grid grid-cols-1 md:grid-cols-3 gap-4 mt-4'>
+                { allTasks?.map((item,index)=>(
+                    <TaskCard key={item._id} 
+                    title={item.title}
+                    description={item.description}
+                    priority={item.priority}
+                    status = {item.status}
+                    progress = {item.progress}
+                    createdAt = {item.createdAt}
+                    dueDate = {item.dueDate}
+                    assignedTo={item?.assignedTo?.map((item)=>item.profileImageUrl)}
+                    attachmentCount={item?.attachments?.length || 0}
+                    completedTodoCount={item?.completedTodoCount ||0}
+                    todoCheckList = {item?.todoChecklist || [] }
+                    onClick={()=>handleClick(item)}
+                    />
+                ))}
         </div>
       </div>
     </DashboardLayout>

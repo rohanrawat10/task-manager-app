@@ -1,7 +1,7 @@
 import React from 'react'
 
 function AvatarGroup({avatars,maxVisible}) {
-    console.log("avatars",avatars)
+    // console.log("avatars",avatars)
 
   return (
     <div className='flex items-center'>
