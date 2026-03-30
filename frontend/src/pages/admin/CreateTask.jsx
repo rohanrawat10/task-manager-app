@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom'
 import DashboardLayout from "../../components/DashboardLayout"
 import { MdAutoDelete } from 'react-icons/md';
@@ -9,7 +9,7 @@ import TodoChecklistInput from '../../components/TodoChecklistInput';
 import AddAttachmentsInput from '../../components/AddAttachmentsInput';
 import axios from 'axios';
 import { serverUrl } from '../../config';
-
+import moment from "moment";
 function CreateTask() {
   const location = useLocation();
   const { taskId } = location.state || {}
@@ -85,9 +85,42 @@ function CreateTask() {
     }
     createTask()
   }
-  const getDetailsById = async () => {}
+  const getTaskDetailsById = async () => {
+    try{
+       const result = await axios.get(`${serverUrl}/api/tasks/get-task-by-id/${taskId}`,{withCredentials:true})
+       if(result.data){
+        const taskInfo = result.data
+        setCurrentTask(taskInfo)
+
+        setTaskData((prevState)=>({
+          ...prevState,
+          title:taskInfo?.title,
+          description:taskInfo?.description,
+          priority:taskInfo?.priority,
+          // dueDate:taskInfo?.dueDate?moment(taskInfo?.dueDate).format("yyy-MM-DO")
+          // :null,
+          dueDate:taskInfo?.dueDate ? new Date(taskInfo?.dueDate ):null,
+          assignedTo:taskInfo?.assignedTo?.map((item)=>item?._id||[]),
+          todoChecklist:
+          taskInfo?.todoChecklist?.map((item)=>item?.text) || [],
+          attachments:taskInfo?.attachments || []
+
+        }))
+       }
+    }
+    catch(err){
+      console.log("get Details Error:",err.message)
+    }
+  }
   const deleteTask = async () => {}
 
+  useEffect(()=>{
+    if(taskId){
+      getTaskDetailsById(taskId)
+    }
+    return ()=>{}
+  },[taskId])
+  console.log(typeof taskData.dueDate, taskData.dueDate)
   return (
     <DashboardLayout activeMenu={"Create Task"}>
       <div className='p-6'>
@@ -167,7 +200,7 @@ function CreateTask() {
                     Due Date<span className='text-red-700'>*</span>
                   </label>
                   <DatePicker
-                    selected={taskData.dueDate}
+                    selected={taskData.dueDate ? new Date(taskData.dueDate):null}
                     onChange={(date) => handleValueChange("dueDate", date)}
                     minDate={new Date()}
                     placeholderText='Select Due Date'
