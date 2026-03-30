@@ -63,7 +63,28 @@ function CreateTask() {
       console.error("task creatded",err.message)
     }
   }
-  const updateTask = async () => {}
+  const updateTask = async () => {
+    try{
+              const todolist = taskData.todoChecklist?.map((item)=>{
+                const prevTodoChecklist = currentTask?.todoChecklist || []
+                const matchedTask = prevTodoChecklist.find((task)=>task.text === item)
+                return{
+                  text:item,
+                  completed:matched?matchedTask.completed:false,
+                }
+              })
+              const result = await axios.put(`${serverUrl}/api/tasks/update-task/${taskId}`,{
+                ...taskData,
+                dueDate:new Date(taskData.dueDate).toISOString(),
+                todoChecklist:todolist,
+              },{withCredentials:true})
+              navigate('/admin/tasks')
+              console.log("update task date",result.data)
+            }
+    catch(err){
+      console.error(err.message);
+    }
+  }
   const handleSubmit = async (e) => {
     setError("")
     if(!taskData.title.trim()){
