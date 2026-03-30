@@ -10,6 +10,7 @@ import AddAttachmentsInput from '../../components/AddAttachmentsInput';
 import axios from 'axios';
 import { serverUrl } from '../../config';
 import moment from "moment";
+import toast from 'react-hot-toast';
 function CreateTask() {
   const location = useLocation();
   const { taskId } = location.state || {}
@@ -56,11 +57,13 @@ function CreateTask() {
               dueDate:new Date(taskData.dueDate.toISOString()),
                  todoChecklist:todoList,
             },{withCredentials:true})
+            toast.success("Task created successfully!");
             clearData();
-            console.log("task Created",result.data)
+            // console.log("task Created",result.data)
     }
     catch(err){
-      console.error("task creatded",err.message)
+      console.error("Error Create Task",err.message)
+      toast.error("Error Create Task!")
     }
   }
   const updateTask = async () => {
@@ -79,10 +82,12 @@ function CreateTask() {
                 todoChecklist:todolist,
               },{withCredentials:true})
               navigate('/admin/tasks')
-              console.log("update task date",result.data)
+              toast.success("Task has been successfully updted!")
+              // console.log("update task date",result.data)
             }
     catch(err){
       console.error(err.message);
+      toast.error("Update task error")
     }
   }
   const handleSubmit = async (e) => {

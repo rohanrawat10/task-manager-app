@@ -12,6 +12,7 @@ import MyTasks from './pages/user/MyTasks'
 import TaskDetails from './pages/user/TaskDetails'
 import ForgotPassword from './pages/auth/ForgotPassword'
 import { useSelector } from 'react-redux'
+import  toast, { Toaster } from 'react-hot-toast';
 export default function App() {
   return (
     <div >
@@ -40,6 +41,7 @@ export default function App() {
         <Route path='/' element={<Root/>}/>
       </Routes>
       </BrowserRouter>
+      <Toaster/>
     </div>
   )
 }
