@@ -11,6 +11,7 @@ import axios from 'axios';
 import { serverUrl } from '../../config';
 import { useDispatch } from 'react-redux';
 import uploadImage from '../../utils/uploadImage';
+import toast from 'react-hot-toast';
 
 function SignUp() {
   const dispatch = useDispatch()
@@ -72,7 +73,10 @@ function SignUp() {
     );
 
     setError("");
-    console.log(result.data);
+   toast.success("Sign up successfully!")
+
+
+    // console.log(result.data);
     if(result.data.role ==="admin"){
       navigate("/admin/dashboard")
     }
@@ -82,6 +86,7 @@ function SignUp() {
   } catch (err) {
     const msg = err.response?.data?.message || "Something went wrong";
     setError(msg);
+    toast.error("Sign Up Error!")
     console.error(msg)
   }
 };

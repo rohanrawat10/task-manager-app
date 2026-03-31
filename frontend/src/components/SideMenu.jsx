@@ -4,6 +4,7 @@ import { serverUrl } from '../config'
 import { useDispatch, useSelector } from 'react-redux'
 import { useNavigate } from 'react-router-dom'
 import { SIDE_MENU_DATA, USER_SIDE_MENU_DATA } from '../utils/data'
+import toast from 'react-hot-toast'
 
 function SideMenu({ activeMenu }) {
   const [SideMenuData, setSideMenuData] = useState([])
@@ -29,8 +30,10 @@ function SideMenu({ activeMenu }) {
         dispatch({ type: 'SIGN_OUT_SUCCESS' }) 
         navigate("/login")
       }  
+      toast.success("Logged Out!")
     } catch (err) {
       console.error("Logout error:", err)
+      toast.error("Log Out Error!")
     }
   }
 

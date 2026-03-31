@@ -41,7 +41,21 @@ export default function App() {
         <Route path='/' element={<Root/>}/>
       </Routes>
       </BrowserRouter>
-      <Toaster/>
+      <Toaster
+       toastOptions={{
+        duration:3000,
+    success: {
+      style: {
+        color: 'green',
+      },
+    },
+    error: {
+      style: {
+        color: 'red',
+      },
+    },
+  }}
+      />
     </div>
   )
 }

@@ -11,7 +11,7 @@ export default function Modal({children,isOpen,onClose,title}) {
        <div className='absolute inset-0 bg-white/30' onClick={onClose}>
 
        </div>
-       <div className='relative w-full max-w-md mx-4 overflow-hidden rounded-2xl shadow-xl border border-white/20 bg-white/90 backdrop-blur-lg transform transition-all duration-300 ease-out'>
+       <div className='relative w-full max-w-md mx-4 overflow-hidden rounded-2xl shadow-xl border border-white/20 bg-white/90 backdrop-blur-lg transform transition-all duration-1000 ease-in'>
            <div className="flex items-center justify-between px-6 py-4 border-b border-gray-100">
                     <h3 className='text-xl font-semibold text-gray-800'>{title}</h3>
                     <button onClick={onClose}

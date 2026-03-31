@@ -11,6 +11,8 @@ import axios from 'axios';
 import { serverUrl } from '../../config';
 import moment from "moment";
 import toast from 'react-hot-toast';
+import Modal from '../../components/Modal';
+import DeleteAlert from '../../components/DeleteAlert';
 function CreateTask() {
   const location = useLocation();
   const { taskId } = location.state || {}
@@ -138,7 +140,18 @@ function CreateTask() {
       console.log("get Details Error:",err.message)
     }
   }
-  const deleteTask = async () => {}
+  const deleteTask = async () => {
+    try{
+         const result = await axios.delete(`${serverUrl}/api/tasks/delete-task/${taskId}`,{withCredentials:true})     
+            setOpenDeleteAlert()
+              toast.success("Task Deleted!")
+              navigate("/admin/tasks")
+        }
+    catch(err){
+      console.error("Delete task error:",err.message)
+      
+    }
+  }
 
   useEffect(()=>{
     if(taskId){
@@ -282,6 +295,9 @@ function CreateTask() {
           </form>
         </div>
       </div>
+      <Modal isOpen={openDeleteAlert} onClose={()=>setOpenDeleteAlert(false)} title={"Delete Task"}>
+        <DeleteAlert content="Click Confirm To Delete" onDelete={()=>deleteTask()}/>
+      </Modal>
     </DashboardLayout>
   )
 }

@@ -11,6 +11,7 @@ import { ClipLoader } from "react-spinners";
 import { validateEmail } from "../../utils/helper";
 import { useDispatch, useSelector } from "react-redux";
 import { signInFailure, signInStart, signInSuccess } from "../../redux/userSlice";
+import toast from "react-hot-toast";
 function Login() {
 const navigate = useNavigate();
   const dispatch = useDispatch()
@@ -42,6 +43,7 @@ const navigate = useNavigate();
       },{withCredentials:true})
       // navigate("/")
       setError("")
+      toast.success("Logged In!")
       //  setLoading(false)
        console.log(result.data)
        if(result.data.role === "admin"){
@@ -50,6 +52,7 @@ const navigate = useNavigate();
        }
        else{
         dispatch(signInSuccess(result.data))
+        toast.error("log In Error!")
         navigate("/user/dashboard")
        }
     }
