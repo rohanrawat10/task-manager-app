@@ -63,7 +63,7 @@ A full-stack **MERN** task management platform built for teams. Features role-ba
 
 ```bash
 # Clone the repository
-git clone https://github.com/rohanrawat10/task-manager.git
+git clone https://github.com/rohanrawat10/task-manager-app
 cd task-manager
 ```
 
