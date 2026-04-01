@@ -107,13 +107,13 @@ App will run on `http://localhost:3000`
 
 ```
 task-manager/
-├── client/                 # React frontend
+├── frontend/                 # React frontend
 │   ├── src/
 │   │   ├── components/     # Reusable UI components
 │   │   ├── pages/          # Route-level pages
 │   │   ├── redux/          # State management (slices, store)
 │   │   └── utils/          # Helper functions
-├── server/                 # Node.js backend
+├── backend/                 # Node.js backend
 │   ├── controllers/        # Route handlers
 │   ├── models/             # Mongoose schemas
 │   ├── routes/             # API routes
