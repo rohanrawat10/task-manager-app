@@ -86,21 +86,24 @@ function Dashboard() {
         {/* STATS GRID - MOBILE:1, TABLET:2, DESKTOP:4 */}
         {dashboardData && (
           <section className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-3 2xl:grid-cols-4 gap-3 sm:gap-4 lg:gap-6 auto-rows-fr">
-            <article className="group bg-white/80 backdrop-blur-sm p-3 sm:p-4 md:p-6 rounded-3xl shadow-lg hover:shadow-2xl border border-gray-100/50 hover:border-gray-200/50 transition-all duration-300 border-l-4 border-l-blue-500 hover:-translate-y-1">
+            <article className="group bg-white/80 backdrop-blur-sm p-3 sm:p-4 md:p-6 rounded-3xl shadow-lg hover:shadow-2xl border
+             border-gray-100/50 hover:border-gray-200/50 transition-all duration-300 border-l-4 border-l-blue-500 hover:-translate-y-1">
               <h3 className="text-gray-500 text-xs sm:text-sm font-semibold uppercase tracking-wider group-hover:text-gray-700">Total Tasks</h3>
               <p className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-black text-gray-900 mt-1 sm:mt-2">
                 {dashboardData?.charts?.taskDistribution.All || 0}
               </p>
             </article>
             
-            <article className="group bg-white/80 backdrop-blur-sm p-3 sm:p-4 md:p-6 rounded-3xl shadow-lg hover:shadow-2xl border border-gray-100/50 hover:border-gray-200/50 transition-all duration-300 border-l-4 border-l-yellow-500 hover:-translate-y-1">
+            <article className="group bg-white/80 backdrop-blur-sm p-3 sm:p-4 md:p-6 rounded-3xl shadow-lg hover:shadow-2xl border
+             border-gray-100/50 hover:border-gray-200/50 transition-all duration-300 border-l-4 border-l-yellow-500 hover:-translate-y-1">
               <h3 className="text-gray-500 text-xs sm:text-sm font-semibold uppercase tracking-wider group-hover:text-gray-700">Pending</h3>
               <p className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-black text-gray-900 mt-1 sm:mt-2">
                 {dashboardData?.charts?.taskDistribution.Pending || 0}
               </p>
             </article>
             
-            <article className="group bg-white/80 backdrop-blur-sm p-3 sm:p-4 md:p-6 rounded-3xl shadow-lg hover:shadow-2xl border border-gray-100/50 hover:border-gray-200/50 transition-all duration-300 border-l-4 border-l-emerald-500 hover:-translate-y-1">
+            <article className="group bg-white/80 backdrop-blur-sm p-3 sm:p-4 md:p-6 rounded-3xl shadow-lg hover:shadow-2xl border
+             border-gray-100/50 hover:border-gray-200/50 transition-all duration-300 border-l-4 border-l-emerald-500 hover:-translate-y-1">
               <h3 className="text-gray-500 text-xs sm:text-sm font-semibold uppercase tracking-wider group-hover:text-gray-700">In Progress</h3>
               <p className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-black text-gray-900 mt-1 sm:mt-2">
                 {dashboardData?.charts?.taskDistribution.InProgress || 0}

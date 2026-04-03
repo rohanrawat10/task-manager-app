@@ -76,7 +76,7 @@ function ManageTasks() {
                 className="hidden md:flex items-center gap-2 px-4 py-2.5 bg-blue-500 hover:bg-blue-600
                 text-white rounded-lg transition-all duration-200 font-medium shadow-sm hover:shadow-md active:scale-95"
                 onClick={handleDownloadReport}>
-                  <FaFileExcel className="text-lg"/>
+                  <FaFileExcel className="text-lg text-green-900"/>
                   <span>Download</span>
                 </button>
                 </div>
